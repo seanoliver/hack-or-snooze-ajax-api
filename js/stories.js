@@ -50,3 +50,25 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** Called when user submits the "add a new story" form
+ * Creates a new story and adds it to the story list.
+  */
+
+async function createAndAddNewStory(evt) {
+  evt.preventDefault();
+  console.log('evt', evt);
+
+  const newStory = await storyList.addStory(
+    currentUser,
+    {
+      author: $("#author-input").val(),
+      title: $("#title-input").val(),
+      url: $("#story-url-input").val(),
+    }
+  );
+  getAndShowStoriesOnStart();
+
+}
+
+$newStoryForm.on('submit', createAndAddNewStory);
