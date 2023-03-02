@@ -59,7 +59,7 @@ async function createAndAddNewStory(evt) {
   evt.preventDefault();
   console.log('evt', evt);
 
-  const newStory = await storyList.addStory(
+  await storyList.addStory(
     currentUser,
     {
       author: $("#author-input").val(),
