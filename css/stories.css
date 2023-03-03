@@ -37,3 +37,7 @@
 .story-user {
   display: block;
 }
+
+ul.stories-list li {
+  list-style: none;
+}

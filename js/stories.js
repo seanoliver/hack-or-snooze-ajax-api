@@ -13,6 +13,33 @@ async function getAndShowStoriesOnStart() {
 }
 
 /**
+ * Determine if the story is in currentUser's favorites list. If so, return
+ * the filled in star. If not, return the empty star.
+ */
+
+function getFavoriteStar(story) {
+
+  const isFavorite = currentUser.favorites.some(
+    item => item.storyId === story.storyId);
+
+  // let storyStar = `<a id="star-story-${story.storyId}" href="#">`;
+  let $starLink = $(`<a>`, { id: `star-story-${story.storyId}`, href: "#" })
+  let $starIcon;
+
+  if (isFavorite) {
+    $starIcon = $('<i class="bi bi-star-fill"></i>');
+    $starLink.on('click', currentUser.unFavorite(story));
+  } else {
+    $starIcon = $('<i class="bi bi-star"></i>');
+    $starLink.on('click', currentUser.addFavorite(story));
+  }
+  $starLink.append($starIcon);
+
+
+  return $starLink.prop('outerHTML');
+}
+
+/**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
  *
@@ -23,8 +50,9 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
   return $(`
-      <li id="${story.storyId}">
+      <li id="${story.storyId}">${getFavoriteStar(story)}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
