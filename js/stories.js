@@ -67,7 +67,9 @@ async function createAndAddNewStory(evt) {
       url: $("#story-url-input").val(),
     }
   );
-  getAndShowStoriesOnStart();
+  $newStoryForm.trigger("reset");
+  $newStoryForm.hide();
+  putStoriesOnPage();
 
 }
 

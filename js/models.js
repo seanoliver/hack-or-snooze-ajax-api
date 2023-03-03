@@ -82,7 +82,9 @@ class StoryList {
       data: { "token": user.loginToken, "story": {
         title: newStory.title, author: newStory.author, url: newStory.url}
     }});
-    return new Story(response.data.story);
+    const addedStory = new Story(response.data.story);
+    this.stories.unshift(addedStory);
+    return addedStory;
   }
 }
 
