@@ -51,14 +51,16 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
+
+// TODO: Takes in form; data creates new story; displays story on the page
 /** Called when user submits the "add a new story" form
  * Creates a new story and adds it to the story list.
   */
 
-async function createAndAddNewStory(evt) {
+async function createAndDisplayNewStory(evt) {
   evt.preventDefault();
   console.log('evt', evt);
-
+  // TODO: Save this
   await storyList.addStory(
     currentUser,
     {
@@ -69,8 +71,9 @@ async function createAndAddNewStory(evt) {
   );
   $newStoryForm.trigger("reset");
   $newStoryForm.hide();
+  //TODO: Call generateStoryMarkup and prepend to the story list in the DOM
   putStoriesOnPage();
 
 }
 
-$newStoryForm.on('submit', createAndAddNewStory);
+$newStoryForm.on('submit', createAndDisplayNewStory);
