@@ -27,6 +27,15 @@ class Story {
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
   }
+
+  /** Sends an API request returns the story instance with the searchId*/
+
+  static async getStoryById(searchId) {
+    return await axios({
+      url: `${BASE_URL}/stories/${searchId}`,
+      method: "GET"
+    });
+  }
 }
 
 

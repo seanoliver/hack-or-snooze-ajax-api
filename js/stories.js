@@ -12,6 +12,21 @@ async function getAndShowStoriesOnStart() {
   putStoriesOnPage();
 }
 
+/** Toggles star on user click on star */
+
+async function handleStarClick(evt) {
+  evt.preventDefault();
+  const story = await Story.getStorybyId(evt.target.id);
+  if(currentUser.isInFavorites(story)) {
+    currentUser.unFavorite(story);
+  }
+  else {
+    currentUser.addFavorite(story);
+  }
+  getFavoriteStar(story);
+}
+$body.on("click", "#favorite-star", handleStarClick);
+
 /**
  * Determine if the story is in currentUser's favorites list. If so, return
  * the filled in star. If not, return the empty star.
@@ -19,23 +34,28 @@ async function getAndShowStoriesOnStart() {
 
 function getFavoriteStar(story) {
 
+  //returns true if story is in favorites
   const isFavorite = currentUser.favorites.some(
     item => item.storyId === story.storyId);
+    console.log("isFavorite", isFavorite);
 
   // let storyStar = `<a id="star-story-${story.storyId}" href="#">`;
-  let $starLink = $(`<a>`, { id: `star-story-${story.storyId}`, href: "#" })
+  let $starLink = $(`<a>`,
+  {
+    id: `${story.storyId}`,
+    class: "favorite-star",
+    href: "#"
+  })
   let $starIcon;
 
   if (isFavorite) {
     $starIcon = $('<i class="bi bi-star-fill"></i>');
-    $starLink.on('click', currentUser.unFavorite(story));
   } else {
     $starIcon = $('<i class="bi bi-star"></i>');
-    $starLink.on('click', currentUser.addFavorite(story));
   }
   $starLink.append($starIcon);
 
-
+console.log("favoriteStar HTML:", $starLink.prop('outerHTML'));
   return $starLink.prop('outerHTML');
 }
 
