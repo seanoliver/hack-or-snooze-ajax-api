@@ -24,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    const storyURL = new URL(this.url);
+    return storyURL.hostname;
   }
 
   /** Sends an API request returns the story instance with the searchId*/
@@ -243,6 +243,11 @@ class User {
     this.favorites = this.favorites.filter(
       item => item.storyId !== story.storyId);
   }
+
+  /** Accepts a story object and checks server if user has favorited
+   * this story. returns true or false.
+   *
+   */
 
   async isInFavorites(story) {
     console.log('isInFavorites ran');

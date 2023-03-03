@@ -26,7 +26,9 @@ async function handleStarClick(evt) {
   else {
     await currentUser.addFavorite(story);
   }
-  toggleStarIcon(story.id);
+  console.log('story before toggle', story);
+  console.log('story.id', story.storyId)
+  toggleStarIcon(story.storyId);
 }
 
 /**
@@ -34,7 +36,8 @@ async function handleStarClick(evt) {
  */
 
 function toggleStarIcon(storyId) {
-  const $starIcon = $(`#${storyId} i:first-child`);
+  console.log('storyId', storyId);
+  const $starIcon = $(`#${storyId} i`);
 
   console.log('$starIcon', $starIcon);
   $starIcon.hasClass('bi-star-fill')
@@ -83,7 +86,7 @@ console.log("favoriteStar HTML:", $starLink.prop('outerHTML'));
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
+  console.debug("generateStoryMarkup", story);
 
 
   const hostName = story.getHostName();
@@ -153,9 +156,11 @@ function putFavoritesOnPage() {
 
   // loop through all of our favorite stories and generate HTML for them
   for (let story of currentUser.favorites) {
-    const $story = generateStoryMarkup(story);
+    const storyObject = new Story(story);
+    const $story = generateStoryMarkup(storyObject);
     $favoritesList.append($story);
   }
+  $('.favorite-star').on('click', handleStarClick);
 
   $favoritesList.show();
 }
