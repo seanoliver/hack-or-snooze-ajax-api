@@ -76,3 +76,20 @@ async function createAndDisplayNewStory(evt) {
 }
 
 $newStoryForm.on('submit', createAndDisplayNewStory);
+
+
+/** Get favorites list from server and display them on page */
+
+function putFavoritesOnPage() {
+  console.debug("putFavoritesOnPage");
+
+  $favoritesList.empty();
+
+  // loop through all of our favorite stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoritesList.append($story);
+  }
+
+  $favoritesList.show();
+}
