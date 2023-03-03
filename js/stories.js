@@ -16,16 +16,32 @@ async function getAndShowStoriesOnStart() {
 
 async function handleStarClick(evt) {
   evt.preventDefault();
-  const story = await Story.getStorybyId(evt.target.id);
-  if(currentUser.isInFavorites(story)) {
-    currentUser.unFavorite(story);
+  console.log('event currentTarget:', evt.currentTarget);
+  const storyResponse = await Story.getStoryById(evt.currentTarget.id);
+  const story = storyResponse.data.story;
+  console.log('story', story);
+  if(await currentUser.isInFavorites(story)) {
+    await currentUser.unFavorite(story);
   }
   else {
-    currentUser.addFavorite(story);
+    await currentUser.addFavorite(story);
   }
-  getFavoriteStar(story);
+  toggleStarIcon(story.id);
 }
-$body.on("click", "#favorite-star", handleStarClick);
+
+/**
+ * Toggle the star icon between filled and non-filled
+ */
+
+function toggleStarIcon(storyId) {
+  const $starIcon = $(`#${storyId} i:first-child`);
+
+  console.log('$starIcon', $starIcon);
+  $starIcon.hasClass('bi-star-fill')
+    ? $starIcon.removeClass('bi-star-fill').addClass('bi-star')
+    : $starIcon.removeClass('bi-star').addClass('bi-star-fill');
+}
+
 
 /**
  * Determine if the story is in currentUser's favorites list. If so, return
@@ -69,6 +85,7 @@ console.log("favoriteStar HTML:", $starLink.prop('outerHTML'));
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
+
   const hostName = story.getHostName();
 
   return $(`
@@ -95,7 +112,7 @@ function putStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-
+  $('.favorite-star').on('click', handleStarClick);
   $allStoriesList.show();
 }
 
@@ -120,6 +137,7 @@ async function createAndDisplayNewStory(evt) {
   $newStoryForm.trigger("reset");
   $newStoryForm.hide();
   $allStoriesList.prepend(generateStoryMarkup(newStory));
+  $(`#${newStory.storyId}`).on('click', handleStarClick);
 
 }
 

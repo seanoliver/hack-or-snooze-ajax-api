@@ -244,4 +244,20 @@ class User {
       item => item.storyId !== story.storyId);
   }
 
+  async isInFavorites(story) {
+    console.log('isInFavorites ran');
+
+    const serverUser = await axios({
+      url: `${BASE_URL}/users/${this.username}`,
+      method: "GET",
+      params: { token: this.loginToken },
+    });
+    console.log('serverUser: ', serverUser);
+    return serverUser.data.user.favorites.some(
+      item => item.storyId === story.storyId
+    );
+
+  }
+
 }
+
