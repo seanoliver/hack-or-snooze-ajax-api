@@ -54,25 +54,24 @@ function putStoriesOnPage() {
 
 // TODO: Takes in form; data creates new story; displays story on the page
 /** Called when user submits the "add a new story" form
- * Creates a new story and adds it to the story list.
+ * Creates a new story and displays the story on the page
   */
 
 async function createAndDisplayNewStory(evt) {
   evt.preventDefault();
   console.log('evt', evt);
-  // TODO: Save this
-  await storyList.addStory(
+  const author = $("#author-input").val();
+  const title = $("#title-input").val();
+  const url = $("#story-url-input").val();
+  const storyData = {author, title, url};
+
+  const newStory = await storyList.addStory(
     currentUser,
-    {
-      author: $("#author-input").val(),
-      title: $("#title-input").val(),
-      url: $("#story-url-input").val(),
-    }
+    storyData
   );
   $newStoryForm.trigger("reset");
   $newStoryForm.hide();
-  //TODO: Call generateStoryMarkup and prepend to the story list in the DOM
-  putStoriesOnPage();
+  $allStoriesList.prepend(generateStoryMarkup(newStory));
 
 }
 
