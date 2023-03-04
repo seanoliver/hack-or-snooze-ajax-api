@@ -17,7 +17,8 @@ async function getAndShowStoriesOnStart() {
 async function handleStarClick(evt) {
   evt.preventDefault();
   console.log('event currentTarget:', evt.currentTarget);
-  const story = await Story.getStoryById(evt.currentTarget.id);
+  const $target = $(evt.currentTarget);
+  const story = await Story.getStoryById($target.attr('id'));
   console.log('story', story);
   if(await currentUser.isInFavorites(story)) {
     await currentUser.unFavorite(story);
@@ -28,21 +29,17 @@ async function handleStarClick(evt) {
   console.log('story before toggle', story);
   console.log('story.id', story.storyId);
   //debugger;
-  toggleStarIcon(story.storyId);
+  toggleStarIcon($target.find('i'));
 }
 
 /**
  * Toggle the star icon between filled and non-filled
  */
 
-function toggleStarIcon(storyId) {
-  console.log('storyId', storyId);
-  const $starIcon = $(`#${storyId} i`);
+function toggleStarIcon($starIcon) {
 
   console.log('$starIcon', $starIcon);
-  $starIcon.hasClass('bi-star-fill')
-    ? $starIcon.removeClass('bi-star-fill').addClass('bi-star')
-    : $starIcon.removeClass('bi-star').addClass('bi-star-fill');
+  $starIcon.toggleClass('bi-star-fill bi-star');
 }
 
 
@@ -50,7 +47,7 @@ function toggleStarIcon(storyId) {
  * Determine if the story is in currentUser's favorites list. If so, return
  * the filled in star. If not, return the empty star.
  */
-
+//could just return class of star
 function getFavoriteStar(story) {
 
   //returns true if story is in favorites
@@ -147,7 +144,7 @@ async function createAndDisplayNewStory(evt) {
 $newStoryForm.on('submit', createAndDisplayNewStory);
 
 
-/** Get favorites list from server and display them on page */
+/** Get favorites list and display them on page */
 
 function putFavoritesOnPage() {
   console.debug("putFavoritesOnPage");
