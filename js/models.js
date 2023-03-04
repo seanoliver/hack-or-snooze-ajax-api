@@ -31,10 +31,11 @@ class Story {
   /** Sends an API request returns the story instance with the searchId*/
 
   static async getStoryById(searchId) {
-    return await axios({
+    let response = await axios({
       url: `${BASE_URL}/stories/${searchId}`,
       method: "GET"
     });
+    return new Story(response.data.story);
   }
 }
 
@@ -250,7 +251,6 @@ class User {
    */
 
   async isInFavorites(story) {
-    console.log('isInFavorites ran');
 
     const serverUser = await axios({
       url: `${BASE_URL}/users/${this.username}`,
@@ -258,10 +258,11 @@ class User {
       params: { token: this.loginToken },
     });
     console.log('serverUser: ', serverUser);
-    return serverUser.data.user.favorites.some(
+    let inFavorite = serverUser.data.user.favorites.some(
       item => item.storyId === story.storyId
     );
-
+    console.log("inFavorite?", inFavorite);
+    return inFavorite;
   }
 
 }

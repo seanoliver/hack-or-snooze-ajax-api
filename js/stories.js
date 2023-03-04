@@ -17,8 +17,7 @@ async function getAndShowStoriesOnStart() {
 async function handleStarClick(evt) {
   evt.preventDefault();
   console.log('event currentTarget:', evt.currentTarget);
-  const storyResponse = await Story.getStoryById(evt.currentTarget.id);
-  const story = storyResponse.data.story;
+  const story = await Story.getStoryById(evt.currentTarget.id);
   console.log('story', story);
   if(await currentUser.isInFavorites(story)) {
     await currentUser.unFavorite(story);
@@ -27,7 +26,8 @@ async function handleStarClick(evt) {
     await currentUser.addFavorite(story);
   }
   console.log('story before toggle', story);
-  console.log('story.id', story.storyId)
+  console.log('story.id', story.storyId);
+  //debugger;
   toggleStarIcon(story.storyId);
 }
 
@@ -156,8 +156,8 @@ function putFavoritesOnPage() {
 
   // loop through all of our favorite stories and generate HTML for them
   for (let story of currentUser.favorites) {
-    const storyObject = new Story(story);
-    const $story = generateStoryMarkup(storyObject);
+    //const storyObject = new Story(story);
+    const $story = generateStoryMarkup(story);
     $favoritesList.append($story);
   }
   $('.favorite-star').on('click', handleStarClick);
